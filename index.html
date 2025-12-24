@@ -3,39 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kết quả CMGS - Thinh3209</title>
+    <title>Gửi Huy Hoàng</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #f0f0f0; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h1 { color: #333; }
-        pre { background: #eee; padding: 15px; overflow-x: auto; border-radius: 5px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+            padding-bottom: 30px;
+        }
+        .header {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .gallery {
+            display: flex;
+            overflow-x: auto;
+            padding: 20px;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+        .gallery img {
+            height: 250px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            object-fit: cover;
+        }
+        .letter-content {
+            padding: 20px 40px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #444;
+            white-space: pre-line; /* Giữ định dạng xuống dòng của thư */
+            font-style: italic;
+        }
+        .music-player {
+            margin-top: 20px;
+        }
+        audio {
+            width: 80%;
+            border-radius: 30px;
+        }
+        /* Ẩn thanh cuộn cho đẹp */
+        .gallery::-webkit-scrollbar {
+            height: 8px;
+        }
+        .gallery::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Dữ liệu từ ThinhSOF.json</h1>
-        <div id="display-area">Đang tải dữ liệu...</div>
+    <div class="card" id="main-card" style="display: none;">
+        <div class="header" id="owner-name">...</div>
+        
+        <div class="gallery" id="photo-gallery">
+            </div>
+
+        <div class="letter-content" id="letter-text">
+            Đang tải bức thư...
+        </div>
+
+        <div class="music-player">
+            <p style="color: #888; font-size: 14px;">🎵 Bấm để nghe nhạc 🎵</p>
+            <audio id="bg-music" controls></audio>
+        </div>
     </div>
 
     <script>
-        // Đường dẫn đến file JSON của bạn
         const jsonUrl = 'ThinhSOF.json';
 
         fetch(jsonUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Không tìm thấy file JSON');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                // Hiển thị dữ liệu ra màn hình (định dạng đẹp)
-                document.getElementById('display-area').innerHTML = 
-                    '<pre>' + JSON.stringify(data, null, 4) + '</pre>';
+                // 1. Hiển thị tên
+                document.getElementById('owner-name').innerText = "Chào " + data.owner;
+
+                // 2. Hiển thị thư
+                document.getElementById('letter-text').innerText = data.letter;
+
+                // 3. Xử lý nhạc
+                const audio = document.getElementById('bg-music');
+                audio.src = data.music; 
+
+                // 4. Xử lý ảnh
+                const gallery = document.getElementById('photo-gallery');
+                if (data.photos && data.photos.length > 0) {
+                    data.photos.forEach(photoSrc => {
+                        const img = document.createElement('img');
+                        img.src = photoSrc;
+                        gallery.appendChild(img);
+                    });
+                } else {
+                    gallery.style.display = 'none';
+                }
+
+                // Hiện thẻ card lên
+                document.getElementById('main-card').style.display = 'block';
             })
             .catch(error => {
-                document.getElementById('display-area').innerText = 'Lỗi: ' + error.message;
+                document.body.innerHTML = '<h3 style="text-align:center; color:red">Không đọc được file dữ liệu :(</h3>';
+                console.error(error);
             });
     </script>
 
