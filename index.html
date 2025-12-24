@@ -186,56 +186,7 @@
             
             initMediaPipe().catch(console.warn);
 
-// [XÓA DÒNG CŨ] const loader = document.getElementById('loader');
-    // [XÓA DÒNG CŨ] loader.style.opacity = 0;
-    // [XÓA DÒNG CŨ] setTimeout(() => loader.remove(), 1200);
-
-    // --- CODE MỚI: ĐỢI TẢI XONG MỚI HIỆN ---
-    const loader = document.getElementById('loader');
-    
-    fetch('data.json')
-        .then(response => {
-            if (!response.ok) throw new Error("Chưa tìm thấy file data.json");
-            return response.text();
-        })
-        .then(jsonData => {
-            // Tải xong dữ liệu -> Nạp vào cây
-            importSceneData(jsonData);
-            console.log("Đã tải dữ liệu thành công!");
-
-            // Ẩn nút điều khiển
-            const ui = document.getElementById('top-right-controls');
-            if (ui) ui.style.display = 'none';
-
-            // BÂY GIỜ MỚI TẮT MÀN HÌNH CHỜ
-            loader.style.opacity = 0;
-            setTimeout(() => loader.remove(), 500);
-        })
-        .catch(error => {
-            console.log("Chạy chế độ mặc định: " + error);
-            // Nếu lỗi (không có file) thì cũng tắt màn hình chờ để hiện cây trống
-            loader.style.opacity = 0;
-            setTimeout(() => loader.remove(), 500);
-        });
-    // ----------------------------------------
-
-            // --- TỰ ĐỘNG TẢI DỮ LIỆU TỪ data.json ---
-            fetch('data.json')
-                .then(response => {
-                    if (!response.ok) throw new Error("Chưa tìm thấy file data.json");
-                    return response.text();
-                })
-                .then(jsonData => {
-                    importSceneData(jsonData);
-                    console.log("Đã tải dữ liệu thành công!");
-                    // Ẩn các nút điều khiển để người xem tập trung xem
-                    const ui = document.getElementById('top-right-controls');
-                    if (ui) ui.style.display = 'none';
-                })
-                .catch(error => {
-                    console.log("Đang chạy chế độ mặc định (chưa có data): " + error);
-                });
-            // ----------------------------------------
+animate()
 
             animate(); 
         }
