@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết quả CMGS - Thinh3209</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f0f0f0; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        pre { background: #eee; padding: 15px; overflow-x: auto; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Dữ liệu từ ThinhSOF.json</h1>
+        <div id="display-area">Đang tải dữ liệu...</div>
+    </div>
+
+    <script>
+        // Đường dẫn đến file JSON của bạn
+        const jsonUrl = 'ThinhSOF.json';
+
+        fetch(jsonUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Không tìm thấy file JSON');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Hiển thị dữ liệu ra màn hình (định dạng đẹp)
+                document.getElementById('display-area').innerHTML = 
+                    '<pre>' + JSON.stringify(data, null, 4) + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('display-area').innerText = 'Lỗi: ' + error.message;
+            });
+    </script>
+
+</body>
+</html>
